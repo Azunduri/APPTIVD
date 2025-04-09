@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Portal Amanda</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f0f0f0;
+    }
+
+    /* LOGIN */
+    .login-container {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .login-box {
+      background: white;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    .login-box input[type="text"] {
+      padding: 10px;
+      width: 250px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      margin-bottom: 20px;
+    }
+
+    .login-box button {
+      padding: 10px 25px;
+      background-color: #3a5a40;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .message {
+      margin-top: 20px;
+      font-weight: bold;
+    }
+
+    /* APP */
+    .app-container {
+      display: none;
+      flex-direction: row;
+    }
+
+    .sidebar {
+      width: 220px;
+      height: 100vh;
+      background-color: #344e41;
+      color: white;
+      padding: 30px 15px;
+      position: fixed;
+      left: 0;
+      top: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    .sidebar h1 {
+      font-size: 22px;
+      margin-bottom: 40px;
+      text-align: center;
+    }
+
+    .menu-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: white;
+      text-decoration: none;
+      font-size: 16px;
+      padding: 10px;
+      border-radius: 8px;
+      transition: background-color 0.3s;
+    }
+
+    .menu-link:hover {
+      background-color: #3a5a40;
+    }
+
+    .content {
+      margin-left: 240px;
+      padding: 40px 20px;
+      flex-grow: 1;
+    }
+
+    .card {
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      padding: 25px;
+      margin-bottom: 40px;
+    }
+
+    .card h2 {
+      color: #3a5a40;
+      margin-bottom: 20px;
+      font-size: 20px;
+    }
+
+    iframe {
+      width: 100%;
+      height: 1000px;
+      border: none;
+      border-radius: 8px;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        display: none;
+      }
+      .content {
+        margin-left: 0;
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Login -->
+<div class="login-container" id="login">
+  <div class="login-box">
+    <h2>Login com CPF</h2>
+    <input type="text" id="cpf" placeholder="Digite seu CPF" />
+    <br>
+    <button onclick="verificarCPF()">Entrar</button>
+    <div class="message" id="mensagem"></div>
+  </div>
+</div>
+
+<!-- App -->
+<div class="app-container" id="app">
+  <div class="sidebar">
+    <h1>🌿 Amanda App</h1>
+    <a class="menu-link" href="#estoque">
+      <i class="fas fa-boxes"></i> Estoque
+    </a>
+    <a class="menu-link" href="#meta">
+      <i class="fas fa-bullseye"></i> Meta ER
+    </a>
+    <a class="menu-link" href="https://azunduri.github.io/formpendura" target="_blank">
+      <i class="fas fa-bullseye"></i> Pendura
+    </a>
+    <a class="menu-link" href="https://gerenciamentosrn-my.sharepoint.com/personal/amanda_gruposrn_com_br/SitePages/INTRANET---VD-SRN.aspx" target="_blank">
+      <i class="fas fa-bullseye"></i> INTRANET VD
+    </a>
+    <a class="menu-link" href="https://azunduri.github.io/consultaacesso/" target="_blank">
+      <i class="fas fa-bullseye"></i> Conta do Gera/Reset de Senha
+    </a>
+  </div>
+
+  <div class="content">
+    <div class="card" id="estoque">
+      <h2>📦 Dashboard de Estoque</h2>
+      <iframe title="Estoque"
+        src="https://app.powerbi.com/view?r=eyJrIjoiYzYzNmMyNTAtYzYzNy00NTA1LWFlYmEtNGI4MGM0MjQ1YmUxIiwidCI6ImRlM2IwZDBmLTY0OTEtNGQzZi1iYzJmLWY0ZDIzZDRmNDcyNiJ9"
+        allowFullScreen="true">
+      </iframe>
+    </div>
+
+    <div class="card" id="meta">
+      <h2>🎯 Meta ER</h2>
+      <iframe title="IAF - ERS"
+        src="https://app.powerbi.com/view?r=eyJrIjoiNmQzMmM1ZjQtYzIwNy00ZjEyLTg3OTYtOTlkNzFjZGJmYzgxIiwidCI6ImRlM2IwZDBmLTY0OTEtNGQzZi1iYzJmLWY0ZDIzZDRmNDcyNiJ9"
+        allowFullScreen="true">
+      </iframe>
+    </div>
+  </div>
+</div>
+
+<script>
+  async function verificarCPF() {
+    const cpf = document.getElementById("cpf").value.trim().replace(/\D/g, '');
+    const mensagem = document.getElementById("mensagem");
+
+    if (!cpf || cpf.length < 11) {
+      mensagem.textContent = "Digite um CPF válido.";
+      mensagem.style.color = "red";
+      return;
+    }
+
+    try {
+      const url = 'https://script.google.com/macros/s/AKfycbwjXDd_3bMJVEFiYIHJMQWJ9SYaMjHpTW_r5dJO-PgUcoXlPfVsdHKJJ-r8NntGMg6_lQ/exec';
+      const response = await fetch(url);
+      const data = await response.json();
+
+      const autorizado = data.some(row => {
+        const planilhaCPF = String(row.CPF || '').replace(/\D/g, '');
+        return planilhaCPF === cpf;
+      });
+
+      if (autorizado) {
+        mensagem.textContent = "Acesso autorizado!";
+        mensagem.style.color = "green";
+
+        // Oculta o login e exibe o app
+        document.getElementById("login").style.display = "none";
+        document.getElementById("app").style.display = "flex";
+      } else {
+        mensagem.textContent = "CPF não autorizado.";
+        mensagem.style.color = "red";
+      }
+    } catch (error) {
+      mensagem.textContent = "Erro ao consultar dados.";
+      mensagem.style.color = "red";
+      console.error(error);
+    }
+  }
+</script>
+
+</body>
+</html>
