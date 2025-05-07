@@ -119,25 +119,67 @@
 
     iframe {
       width: 100%;
-      height: 1000px;
+      min-height: 700px; /* Altura mínima para telas maiores */
       border: none;
       border-radius: 8px;
+    }
+
+    /* Botão de menu para mobile */
+    .menu-toggle {
+      display: none;
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background-color: #911461;
+      color: white;
+      border: none;
+      padding: 10px 12px;
+      border-radius: 6px;
+      font-size: 20px;
+      z-index: 1001;
+    }
+
+    /* Sidebar mobile */
+    .sidebar.mobile-active {
+      display: flex;
+      position: fixed;
+      z-index: 1000;
+      width: 70%;
+      max-width: 300px;
+      height: 100%;
+      top: 0;
+      left: 0;
+      animation: slideIn 0.3s forwards;
+    }
+
+    @keyframes slideIn {
+      from { transform: translateX(-100%); }
+      to { transform: translateX(0); }
     }
 
     @media (max-width: 768px) {
       .sidebar {
         display: none;
       }
+
+      .menu-toggle {
+        display: block;
+      }
+
       .content {
         margin-left: 0;
         padding: 20px;
+      }
+
+      iframe {
+        height: 80vh; /* Ocupa 80% da altura da tela visível em dispositivos menores */
+        min-height: unset; /* Remove a altura mínima para evitar conflitos */
       }
     }
   </style>
 </head>
 <body>
-
-<!-- Login -->
+  <!-- Login -->
 <div class="login-container" id="login">
   <div class="login-box">
     <h2>Login com CPF</h2>
@@ -150,6 +192,9 @@
 
 <!-- App -->
 <div class="app-container" id="app">
+  <button class="menu-toggle" onclick="toggleMenu()" aria-label="Abrir menu de navegação">
+    ☰
+  </button>
   <div class="sidebar">
     <h1>🌿 Amanda App</h1>
     <a class="menu-link" href="#estoque">
@@ -162,14 +207,14 @@
       <i class="fas fa-coins"></i> Pendura
     </a>
     <a class="menu-link" href="https://drive.google.com/drive/folders/18AzhTCDg_losVR2YmKMKeD7hMuWF4MZG?usp=sharing" target="_blank">
-        <i class="fas fa-folder-open"></i> Pendura PDF
-      </a>
+      <i class="fas fa-folder-open"></i> Pendura PDF
+    </a>
     <a class="menu-link" href="https://www.google.com/maps/d/u/0/viewer?mid=1arZUMx_Shd8mRtMmYm95hg8o9xw&shorturl=1&ll=-23.565598064251184%2C-46.64355931672357&z=14" target="_blank">
       <i class="fas fa-thumbtack"></i> Mapa de Cobertura
     </a>
     <a class="menu-link" href="https://gerenciamentosrn-my.sharepoint.com/personal/amanda_gruposrn_com_br/SitePages/INTRANET---VD-SRN.aspx" target="_blank">
-        <i class="fas fa-globe"></i> Intranet VD SRN
-      </a>
+      <i class="fas fa-globe"></i> Intranet VD SRN
+    </a>
     <a class="menu-link" href="https://azunduri.github.io/consultaacesso/" target="_blank">
       <i class="fas fa-desktop"></i> Reset de Senha - Acesso GERA
     </a>
@@ -207,7 +252,7 @@
     const cpf = document.getElementById("cpf").value.trim().replace(/\D/g, '');
     const mensagem = document.getElementById("mensagem");
 
-    if (!cpf || cpf.length < 11) {
+    if (!cpf || cpf.length !== 11) { // Verifica se o CPF tem exatamente 11 dígitos
       mensagem.textContent = "Digite um CPF válido.";
       mensagem.style.color = "red";
       return;
@@ -216,6 +261,11 @@
     try {
       const url = 'https://script.google.com/macros/s/AKfycbwjXDd_3bMJVEFiYIHJMQWJ9SYaMjHpTW_r5dJO-PgUcoXlPfVsdHKJJ-r8NntGMg6_lQ/exec';
       const response = await fetch(url);
+
+      if (!response.ok) {
+        throw new Error("Erro na resposta do servidor.");
+      }
+
       const data = await response.json();
 
       const autorizado = data.some(row => {
@@ -235,10 +285,15 @@
         mensagem.style.color = "red";
       }
     } catch (error) {
-      mensagem.textContent = "Erro ao consultar dados.";
+      mensagem.textContent = "Erro ao consultar dados. Tente novamente mais tarde.";
       mensagem.style.color = "red";
-      console.error(error);
+      console.error("Erro:", error);
     }
+  }
+
+  function toggleMenu() {
+    const sidebar = document.querySelector('.sidebar');
+    sidebar.classList.toggle('mobile-active');
   }
 </script>
 
